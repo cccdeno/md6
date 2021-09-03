@@ -1,6 +1,5 @@
 import * as md6 from '../mod.ts'
 
-console.log('md6=', md6)
 let html = md6.toHtml(`
 # Chapter
 

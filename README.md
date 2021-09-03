@@ -1,4 +1,4 @@
-# md6: A deno package converts Markdown into HTML
+# md6: A Deno Package Converts Markdown into HTML
 
 md6 support math plugin syntax for [pandoc](https://pandoc.org/MANUAL.html#math) and [gitlab](https://docs.gitlab.com/ee/user/markdown.html#math) .
 
@@ -7,9 +7,8 @@ md6 support math plugin syntax for [pandoc](https://pandoc.org/MANUAL.html#math)
 File : ex1.js
 
 ```js
-import md6 from '../src/mod.js'
+import * as md6 from '../mod.ts'
 
-console.log('md6=', md6)
 let html = md6.toHtml(`
 # Chapter
 
@@ -18,6 +17,12 @@ let html = md6.toHtml(`
 A link to [YouTube](http://tw.youtube.com) that you may click
 
 ![Image1](../img/image.jpg)
+
+This is an H1
+=============
+
+This is an H2
+-------------
 
 ## Math
 
@@ -51,7 +56,6 @@ console.log(html)
 
 ```
 $ deno run ex1.js
-md6= { parse: [Function], newHtmlRender: [Function], toHtml: [Function] }
 
 <h1> Chapter</h1>
 
@@ -64,19 +68,23 @@ md6= { parse: [Function], newHtmlRender: [Function], toHtml: [Function] }
 <figcaption>Image1</figcaption></figure>
 </p>
 
+<h1>This is an H1</h1>
+
+<h2>This is an H2</h2>
+
 <h2> Math</h2>
 
 <p>Support pandoc and gitlab extension</p>
 
 <h3> Pandoc syntax</h3>
 
-<p>An embedded \(int f(x) dx\) math expression.</p>
+<p>An embedded \(int f(x) dx\) math expression.</p>     
 
 \[int f(x) dx\]
 
 <h3> Gitlab syntax</h3>
 
-<p>An embedded \(int f(x) dx\) math expression.</p>
+<p>An embedded \(int f(x) dx\) math expression.</p>     
 
 \[int f(x) dx\]
 
