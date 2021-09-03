@@ -1,4 +1,4 @@
-import * as md6 from '../mod.ts'
+import * as md6 from 'https://deno.land/x/md6/mod.ts'
 
 let html = md6.toHtml(`
 # Chapter

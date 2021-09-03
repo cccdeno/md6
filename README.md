@@ -2,12 +2,18 @@
 
 md6 support math plugin syntax for [pandoc](https://pandoc.org/MANUAL.html#math) and [gitlab](https://docs.gitlab.com/ee/user/markdown.html#math) .
 
+## Import
+
+```js
+import * as md6 from 'https://deno.land/x/md6/mod.ts'
+```
+
 ## Example 1
 
 File : ex1.js
 
 ```js
-import * as md6 from '../mod.ts'
+import * as md6 from 'https://deno.land/x/md6/mod.ts'
 
 let html = md6.toHtml(`
 # Chapter
