@@ -47,7 +47,7 @@ End
 console.log(html)
 ```
 
-Run:
+## Run
 
 ```
 $ deno run ex1.js
