@@ -22,6 +22,8 @@ A link to [YouTube](http://tw.youtube.com) that you may click
 
 ![Image1](../img/image.jpg)
 
+notice: \`A <tag> should end with </tag> in a markup language\`
+
 </body>
 `
 
