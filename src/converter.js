@@ -42,8 +42,6 @@ export function htmlScan(doc) {
 
 export function toHtml(doc) {
   doc = mdFix(doc)
-  console.log('mdFix: doc=', doc)
-  // Deno.exit();
   let list = []
   let tokens = htmlScan(doc)
   let len = tokens.length
@@ -58,43 +56,3 @@ export function toHtml(doc) {
   }
   return list.join('\n')
 }
-
-/*
-let xml = `
-<style>
-div { margin: 0px; }
-</style>
-<body>
-  <script>
-    console.log("hello!")
-  </script>
-
-  <svg width="100" height="100">
-  <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
-  </svg>
-<!--
-This is comment
--->
-<!-- This is comment -->
-
-# Chapter
-
-<div> xxx </div>
-
-## Section 1
-
-A link to [YouTube](http://tw.youtube.com) that you may click
-
-![Image1](../img/image.jpg)
-
-</body>
-`
-
-// var reg = /(<!--[^-]*-->)/gmi 
-// var reg = /(<!--[\S\s]*?-->)/gmi 
-// var m = xml.match(reg)
-// console.log(m)
-
-let outHtml = toHtml(xml)
-console.log(outHtml)
-*/

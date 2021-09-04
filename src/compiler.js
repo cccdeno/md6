@@ -25,9 +25,7 @@ var lines, lineIdx, lineTop, paragraph, gen, refMap
 M.compile = function (md, fgen) {
   lines = (md+'\n').replace(/\r/g, '').replace(/\t/g, '    ').split('\n'); lineTop = lines.length; lineIdx = 0; paragraph={ type:'paragraph', childs:[] }
   gen = fgen
-  // refMap = {}
   M.refMap = refMap = {}
-  // for (var member in refMap) delete refMap[member]
   let tree = MD()
   return tree
 }
@@ -41,7 +39,6 @@ let genLine = function (line) {
 }
 
 let inline = function (text) {
-  // 去除 |(<(?<url>.*?)>)| 改放入 fullurl，因為會把 html tag，像是 <br/> 當成超連結。
   var regexp = /(``(?<code2>.*?)``)|(`(?<code1>.*?)`)|(__(?<under2>.*)?__)|(_(?<under1>.*?)_)|(\$[`$]?(?<math1>.*?)[`$]?\$)|(<?(?<urlfull>(\w*:\/\/[^\s>]*))>?)|(?<image>!\[(?<itext>[^\]]*?)\]\((?<ihref>[^\"\]]*?)("(?<ialt>[^\"\]]?)")?\))|(?<link>\[(?<text>[^\]]*?)\]\((?<href>[^\"\]]*?)("(?<alt>[^\"\]]?)")?\))|(\*\*(?<star2>.*?)\*\*)|(\*(?<star1>.*?)\*)|(\[(?<ref1>.*?)\])/g
   var m, lastIdx = 0, len = text.length
   var r = []
@@ -62,7 +59,7 @@ let inline = function (text) {
       obj = {type:'link', text:obj.text, href:obj.href, alt:obj.alt||''}
     else 
       obj = {type, body}
-    // console.log('obj=%j', obj)
+
     r.push(gen(obj))
     lastIdx = regexp.lastIndex
   }
@@ -88,14 +85,12 @@ let BLOCK = function () {
   if (r == null) r = CODE()
   if (r == null) r = MARK()
   if (r == null) r = TABBLOCK()
-  // if (r == null) r = IMAGE()
   if (r == null) r = REF()
   if (r == null) r = HEADER()
   if (r == null) r = HLINE()
   if (r == null) r = LIST()
   if (r == null) r = TABLE()
   if (r == null) {
-    // console.log('lines[%d]=%j', lineIdx, line())
     paragraph.childs.push(genLine(lines[lineIdx++]))
     return []
   } else { // 有比對到某種 BLOCK
@@ -170,27 +165,15 @@ let MATH = function () {
   lineIdx ++
   return gen({type:'math', body:childs.join('\n')})
 }
-/*
-// IMAGE = \n![.*](.*)
-let IMAGE = function () {
-  let m = line().match(/^!\[(.*?)\]\((.*?)(\s*"(.*?)")?\)\s*$/)
-  if (m == null) return null
-  lineIdx++
-  return gen({type:'image', alt:m[1], href:m[2], title:m[4]})
-}
-*/
+
 // [id]: url/to/image  "Optional title attribute"
 // REF = \n[.*]:
 let REF = function () {
   let m = line().match(/^\[(.*?)\]:\s*(.*?)(\s*"(.*?)")?$/)
-  // console.log('REF: m=', m)
   if (m == null) return null
-  // console.log('REF: m=', m)
   lineIdx++
   const [id, href, title] = [m[1], m[2], m[4]]
   refMap[id] = href
-  // console.log('refMap=', refMap)
-  // return gen({type:'ref', id:m[1], href:m[2], title:m[4]})
   return gen({ type: 'ref', id, href, title })
 }
 
@@ -202,12 +185,9 @@ let REF1 = function () {
 
 let HEADER = function () {
   let line1 = lines[lineIdx], line2 = lines[lineIdx+1]
-  // console.log('line1=%j', line1)
   let m = line1.match(/^(#+)(.*)$/) // # ....
-  // console.log('m=%j', m)
   if (m != null) {
     let r = {type:'header', level:m[1].length, childs:inline(m[2])}
-    // console.log('HEADER: r=%j', r)
     lineIdx++
     return gen(r)
   }
@@ -244,7 +224,6 @@ let TABLE = function () {
 let LIST = function (level=0) {
   let m = line().match(/^(\s*)((\*)|(\d+\.))\s/)
   if (m == null) return null
-  // console.log('LIST:level=%d m=%j', level, m.slice(1))
   if (m[1].length < level*4) return null
   let childs = []
   let listType = (m[2][0]==='*') ? 'ul' : 'ol'
@@ -256,7 +235,6 @@ let LIST = function (level=0) {
     if (m[1].length >= (level+1)*4) {
       tChilds = LIST(level+1)
       childs.push(tChilds)
-      // console.log('tChilds=%j', tChilds)
       let line1 = line()
       if (line1 == null) break
       m = line1.match(/^(\s*)((\*)|(\d+\.))\s(.*)$/)
@@ -267,16 +245,5 @@ let LIST = function (level=0) {
     if (tType !== listType) break
     childs.push(gen({type:'li', level, childs: inline(m[5])}))
   }
-  // console.log('list: childs=%j', childs)
   return gen({type:'list', level, listType, childs})
 }
-
-/*
-let head = function (str) {
-  return (line().startsWith(str))
-}
-
-let lineMatch = function (regexp) {
-  return line().match(regexp)
-}
-*/

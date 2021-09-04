@@ -1,7 +1,7 @@
+import * as path from "https://deno.land/std/path/mod.ts";
 import C from './compiler.js'
 const G = {}
 export default G
-import * as path from "https://deno.land/std/path/mod.ts";
 
 G.treeGen = function (node) {
   return node
@@ -57,7 +57,6 @@ export class HtmlGenerator extends Generator {
   link(x) {
     let defExt = this.options.defaultExt || ''
     let ext = path.extname(x.href)
-    // console.log('defExt=%s', defExt)
     if (x.href.indexOf('://') < 0 && ext === '')
       return `<a href="${x.href}${defExt}" alt="${x.alt}">${x.text}</a>`
     else
@@ -75,15 +74,12 @@ export class HtmlGenerator extends Generator {
   code(x) { return `<pre class="code"><code class="${x.lang}">${rs(x.body)}\n</code></pre>`}
   mark(x) { return `<blockquote>\n<p>${x.childs.join('</p>\n<p>')}</p>\n</blockquote>` }
   tabBlock(x) { return `<pre class="tab">${x.childs.join('\n')}\n</pre>` }
-  // image(x) { return `<img src="${x.href}" alt="${x.alt}">${rs(x.title)}</img>` }
   hline(x) { return '<hr>' }
   ref(x) { return '' }
   ref1(x) { 
-    // console.log('C.refMap=', C.refMap)
     const ref = C.refMap[x.body]
     return (ref != null) ? `<a href="${ref}">${rs(x.body)}</a>` : `[${rs(x.body)}]`
   }
-  // star1(x) { return `<strong>${rs(x.body)}</strong>` }
   paragraph(x) { return `<p>${x.childs.join('\n')}</p>` }
   list(x) { return `${'    '.repeat(x.level)}<${x.listType}>\n${x.childs.join('\n')}\n${'    '.repeat(x.level)}</${x.listType}>`}
   li(x) { return `${'    '.repeat(x.level+1)}<li>${x.childs.join('')}</li>` }
