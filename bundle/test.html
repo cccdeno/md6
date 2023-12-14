@@ -1,16 +1,17 @@
 <!doctype html>
-<script type="module">
-import md6 from './md6.js'
-
-console.log('md6=', md6)
-let html = md6.toHtml(`
+<html>
+    <script type="module">
+        import * as md6 from './md6.js'
+        
+        console.log('md6=', md6)
+        let html = md6.toHtml(`
 # Chapter
 
 ## Section 1
 
 A link to [YouTube](http://tw.youtube.com) that you may click
 
-![Image1](../img/image.jpg)
+![Image1](https://www.wikipedia.org/portal/wikipedia.org/assets/img/Wikipedia-logo-v2@1.5x.png)
 
 ## Math
 
@@ -36,6 +37,13 @@ An embedded $\`\int f(x) dx\`$ math expression.
 
 End
 `)
+        
+        console.log(html)
+        document.querySelector("#main").innerHTML = html
+        </script>
+<body>
+<div id="main">
 
-console.log(html)
-</script>
+</div>        
+</body>        
+</html>
